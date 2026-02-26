@@ -1,5 +1,7 @@
 # REST API Woow Technology
 
+![Woow Technology](woow_logo.jpeg)
+
 Este repositorio corresponde a un assignment técnico solicitado por [WoowTechnology SAS](https://woowtechnologysas.com/) como parte del proceso de selección para la vacante de desarrollador de software.
 
 API REST para autenticación y gestión de usuarios. Desarrollada en Node.js con TypeScript, Express y PostgreSQL. Incluye registro, login con JWT, perfil de usuario y listado paginado para administradores.
