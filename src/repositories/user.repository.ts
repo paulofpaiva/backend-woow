@@ -24,3 +24,15 @@ export async function create(data: {
     .returning({ id: users.id, name: users.name, email: users.email, role: users.role });
   return user;
 }
+
+export async function updateById(
+  id: string,
+  data: { name?: string; email?: string; updatedAt?: Date }
+) {
+  const [user] = await db
+    .update(users)
+    .set(data)
+    .where(eq(users.id, id))
+    .returning({ id: users.id, name: users.name, email: users.email, role: users.role });
+  return user ?? null;
+}

@@ -24,3 +24,13 @@ export interface LoginResponse {
   token: string;
   user: UserDto;
 }
+
+export interface UpdateProfileBody {
+  name: string;
+  email?: string;
+}
+
+export interface UpdateProfileResponse {
+  message: string;
+  user: UserDto;
+}
