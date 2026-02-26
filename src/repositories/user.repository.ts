@@ -27,7 +27,7 @@ export async function create(data: {
 
 export async function updateById(
   id: string,
-  data: { name?: string; email?: string; updatedAt?: Date }
+  data: { name?: string; updatedAt?: Date }
 ) {
   const [user] = await db
     .update(users)

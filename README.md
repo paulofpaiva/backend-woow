@@ -155,7 +155,7 @@ Respuesta (200): `{ "id", "name", "email", "role" }`.
 
 `PUT /api/users/me`
 
-Requiere autenticación. Body (JSON): `name` (obligatorio), `email` (opcional; debe ser válido y único si se envía).
+Requiere autenticación. Body (JSON): `name` (obligatorio).
 
 Ejemplo:
 
@@ -163,7 +163,7 @@ Ejemplo:
 curl -X PUT http://localhost:3000/api/users/me \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
-  -d '{"name":"María García López","email":"maria.nueva@example.com"}'
+  -d '{"name":"María García López"}'
 ```
 
 Respuesta (200): `{ "message": "Perfil actualizado", "user": { "id", "name", "email", "role" } }`.

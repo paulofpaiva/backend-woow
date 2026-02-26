@@ -1,4 +1,4 @@
-import { findById, updateById, findByEmail, findManyPaginated } from "../repositories/user.repository";
+import { findById, updateById, findManyPaginated } from "../repositories/user.repository";
 import type {
   UserDto,
   UpdateProfileBody,
@@ -31,21 +31,10 @@ export async function updateProfile(
     error.statusCode = 404;
     throw error;
   }
-  const updates: { name: string; email?: string; updatedAt: Date } = {
+  const updated = await updateById(userId, {
     name: body.name.trim(),
     updatedAt: new Date(),
-  };
-  if (body.email !== undefined && body.email.trim() !== "") {
-    const email = body.email.trim().toLowerCase();
-    const existing = await findByEmail(email);
-    if (existing && existing.id !== userId) {
-      const error = new Error("EMAIL_IN_USE") as Error & { statusCode?: number };
-      error.statusCode = 409;
-      throw error;
-    }
-    updates.email = email;
-  }
-  const updated = await updateById(userId, updates);
+  });
   if (!updated) {
     const error = new Error("UPDATE_FAILED") as Error & { statusCode?: number };
     error.statusCode = 500;
