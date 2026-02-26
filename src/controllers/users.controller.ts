@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { getProfile, updateProfile, listUsers } from "../services/users.service";
-import type { UpdateProfileBody } from "../types/auth.types";
+import type { UpdateProfileBody } from "../models/auth.types";
 
 export async function getMe(req: Request, res: Response): Promise<void> {
   try {

@@ -4,7 +4,7 @@ import type {
   UpdateProfileBody,
   UpdateProfileResponse,
   ListUsersResponse,
-} from "../types/auth.types";
+} from "../models/auth.types";
 
 export async function getProfile(userId: string): Promise<UserDto> {
   const user = await findById(userId);

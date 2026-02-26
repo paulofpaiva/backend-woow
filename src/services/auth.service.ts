@@ -8,7 +8,7 @@ import type {
   LoginBody,
   LoginResponse,
   UserDto,
-} from "../types/auth.types";
+} from "../models/auth.types";
 
 const SALT_ROUNDS = 10;
 
