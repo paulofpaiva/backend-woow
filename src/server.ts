@@ -27,7 +27,13 @@ const timeStr = startupAt.toLocaleTimeString("es-ES", {
 const app = express();
 const port = process.env.PORT ?? 3000;
 
-app.use(cors({ credentials: true }));
+const corsOrigin = process.env.CORS_ORIGIN ?? "http://localhost:5173";
+app.use(
+  cors({
+    origin: corsOrigin,
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(cookieParser());
 app.use(routes);
