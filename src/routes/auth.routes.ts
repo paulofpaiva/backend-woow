@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { register } from "../controllers/auth.controller";
-import { registerValidations } from "../validators/auth.validator";
+import { register, login } from "../controllers/auth.controller";
+import { registerValidations, loginValidations } from "../validators/auth.validator";
 import { handleValidationErrors } from "../middlewares/validation.middleware";
 
 const router = Router();
@@ -10,6 +10,13 @@ router.post(
   registerValidations,
   handleValidationErrors,
   register
+);
+
+router.post(
+  "/login",
+  loginValidations,
+  handleValidationErrors,
+  login
 );
 
 export default router;

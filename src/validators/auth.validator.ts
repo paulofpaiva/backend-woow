@@ -14,3 +14,13 @@ export const registerValidations = [
     .isLength({ min: 8 })
     .withMessage("La contraseña debe tener al menos 8 caracteres"),
 ];
+
+export const loginValidations = [
+  body("email")
+    .trim()
+    .notEmpty()
+    .withMessage("El correo es requerido")
+    .isEmail()
+    .withMessage("El correo no es válido"),
+  body("password").notEmpty().withMessage("La contraseña es requerida"),
+];
