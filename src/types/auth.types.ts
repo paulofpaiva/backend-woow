@@ -27,7 +27,6 @@ export interface LoginResponse {
 
 export interface UpdateProfileBody {
   name: string;
-  email?: string;
 }
 
 export interface UpdateProfileResponse {

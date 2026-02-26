@@ -35,10 +35,6 @@ export async function putMe(req: Request, res: Response): Promise<void> {
       res.status(404).json({ message: "Usuario no encontrado" });
       return;
     }
-    if (e.statusCode === 409) {
-      res.status(409).json({ message: "El correo ya está en uso" });
-      return;
-    }
     res.status(500).json({ message: "Error al actualizar perfil" });
   }
 }
