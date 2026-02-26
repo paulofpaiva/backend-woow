@@ -180,12 +180,28 @@ Respuesta (200): `{ "message": "Perfil actualizado", "user": { "id", "name", "em
 
 `GET /api/users`
 
-Requiere autenticación con un usuario de rol `admin`. Query opcionales: `page` (por defecto 1), `limit` (por defecto 10, máximo 100).
+Requiere autenticación con un usuario de rol `admin`.
 
-Ejemplo:
+Parámetros de query (todos opcionales):
+
+| Parámetro | Tipo   | Descripción |
+|-----------|--------|-------------|
+| `page`    | número | Página (por defecto 1). |
+| `limit`   | número | Resultados por página (por defecto 10, máximo 100). |
+| `search`  | texto | Busca por nombre o email (coincidencia parcial, insensible a mayúsculas). Máximo 255 caracteres. |
+| `role`    | texto | Filtra por rol: `user` o `admin`. |
+
+Ejemplo con paginación:
 
 ```bash
 curl -X GET "http://localhost:3000/api/users?page=1&limit=10" \
+  -H "Authorization: Bearer <token_admin>"
+```
+
+Ejemplo con búsqueda y filtro por rol:
+
+```bash
+curl -X GET "http://localhost:3000/api/users?search=maria&role=user" \
   -H "Authorization: Bearer <token_admin>"
 ```
 
@@ -202,6 +218,41 @@ Tras ejecutar las migraciones se crea un usuario administrador de prueba:
 Puedes usarlo para hacer login y probar `GET /api/users/me` y `GET /api/users`.
 
 Para probar como usuario normal, regístrate con `POST /api/auth/register` usando otro email. Ese usuario tendrá rol `user` y no podrá acceder a `GET /api/users`.
+
+## Uso en Postman
+
+### Configuración base
+
+1. Crea un entorno (Environment) con la variable `baseUrl` = `http://localhost:3000` y, si quieres, `token` para guardar el JWT tras el login.
+2. Para endpoints que requieren autenticación, en la pestaña **Authorization** elige **Bearer Token** y usa `{{token}}` (o pega el token manualmente).
+
+### Login y guardar el token
+
+1. **POST** `{{baseUrl}}/api/auth/login`
+2. Body → raw → JSON: `{ "email": "admin@gmail.com", "password": "12345678" }`
+3. En **Tests** del request, pega esto para guardar el token en el entorno:
+   ```js
+   const res = pm.response.json();
+   if (res.token) pm.environment.set("token", res.token);
+   ```
+4. Ejecuta el request; en el entorno quedará guardado `token` para los siguientes requests.
+
+### Listar usuarios (solo admin) con filtros y búsqueda
+
+1. **GET** `{{baseUrl}}/api/users`
+2. En la pestaña **Params** (query params) puedes usar:
+
+   | Key    | Value   | Descripción |
+   |--------|--------|-------------|
+   | `page` | 1      | Página. |
+   | `limit`| 10     | Resultados por página (máx. 100). |
+   | `search` | maria | Busca en nombre y email (parcial, sin distinguir mayúsculas). |
+   | `role` | user   | Solo usuarios con rol `user`. Usa `admin` para solo admins. |
+
+   Puedes combinar: por ejemplo `page=1`, `limit=5`, `search=admin`, `role=admin` para la primera página de admins cuyo nombre o email contenga "admin".
+
+3. Authorization: Bearer Token → `{{token}}` (token de un usuario admin).
+4. Send. La respuesta incluye `users` (array) y `pagination` (`page`, `limit`, `total`, `totalPages`).
 
 ## Scripts npm
 

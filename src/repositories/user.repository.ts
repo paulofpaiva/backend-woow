@@ -1,6 +1,11 @@
-import { eq, sql } from "drizzle-orm";
+import { and, eq, ilike, or, sql } from "drizzle-orm";
 import { db } from "../db";
 import { users } from "../db/schema";
+
+export type ListUsersFilters = {
+  search?: string;
+  role?: "user" | "admin";
+};
 
 export async function findByEmail(email: string) {
   const [user] = await db.select().from(users).where(eq(users.email, email)).limit(1);
@@ -37,7 +42,23 @@ export async function updateById(
   return user ?? null;
 }
 
-export async function findManyPaginated(limit: number, offset: number) {
+export async function findManyPaginated(
+  limit: number,
+  offset: number,
+  filters?: ListUsersFilters
+) {
+  const conditions = [];
+  if (filters?.search?.trim()) {
+    const term = `%${filters.search.trim()}%`;
+    conditions.push(
+      or(ilike(users.name, term), ilike(users.email, term))!
+    );
+  }
+  if (filters?.role) {
+    conditions.push(eq(users.role, filters.role));
+  }
+  const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
+
   const rows = await db
     .select({
       id: users.id,
@@ -46,11 +67,16 @@ export async function findManyPaginated(limit: number, offset: number) {
       role: users.role,
     })
     .from(users)
+    .where(whereClause)
     .limit(limit)
     .offset(offset)
     .orderBy(users.createdAt);
-  const [{ count }] = await db
+
+  const countQuery = db
     .select({ count: sql<number>`count(*)::int` })
     .from(users);
+  const [{ count }] = whereClause
+    ? await countQuery.where(whereClause)
+    : await countQuery;
   return { rows, total: Number(count) };
 }
