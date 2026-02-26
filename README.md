@@ -1,74 +1,81 @@
 # Backend Woow
 
-API REST em Node.js + TypeScript com Express e PostgreSQL (Drizzle ORM).
+API REST en Node.js + TypeScript con Express y PostgreSQL (Drizzle ORM).
 
 ## Requisitos
 
 - Node.js 18+
-- Docker e Docker Compose (para o banco PostgreSQL)
+- Docker y Docker Compose (para el banco PostgreSQL)
 
-## Instalação
+## Instalación
 
 ```bash
 npm install
 cp .env.example .env
 ```
 
-Ajuste o `.env` se precisar (credenciais padrão batem com o `docker-compose.yml`).
+Ajusta el `.env` si hace falta (las credenciales por defecto coinciden con `docker-compose.yml`).
 
-## Como subir o banco de dados
+## Cómo subir la base de datos
 
-Com Docker instalado, na raiz do projeto:
+Con Docker instalado, en la raíz del proyecto:
 
 ```bash
 docker compose up -d
 ```
 
-Isso sobe o PostgreSQL na porta `5432` com usuário `woow`, senha `woow_secret` e banco `woow_db`.
+Esto levanta PostgreSQL en el puerto `5432` con usuario `woow`, contraseña `woow_secret` y base de datos `woow_db`.
 
-Para aplicar o schema (primeira vez ou após mudanças no schema):
+Para aplicar el schema (primera vez o tras cambios en el schema):
 
 ```bash
 npm run db:generate
 npm run db:migrate
 ```
 
-## Como iniciar a API
+## Cómo iniciar la API
 
-**Desenvolvimento** (com reload ao salvar):
+**Desarrollo** (con recarga al guardar):
 
 ```bash
 npm run dev
 ```
 
-**Produção** (build + start):
+**Producción** (build + start):
 
 ```bash
 npm run build
 npm start
 ```
 
-A API sobe em `http://localhost:3000` (ou na `PORT` do `.env`).
+La API queda en `http://localhost:3000` (o en el `PORT` del `.env`).
 
 ## Healthcheck
 
 - **GET** `/api/health`
 
-Resposta exemplo (quando está tudo ok):
+Ejemplo de respuesta (cuando todo está bien):
 
-- `status`: `"ok"` ou `"degraded"` (degraded se o banco estiver inacessível)
-- `message`: mensagem em español
+- `status`: `"ok"` o `"degraded"` (degraded si la base no está disponible)
+- `message`: mensaje en español
 - `api`: `name`, `version`
-- `database`: `"ok"` ou `"down"`
+- `database`: `"ok"` o `"down"`
 - `timestamp`: ISO
 
 ## Scripts
 
-| Script        | Descrição                    |
-|---------------|------------------------------|
-| `npm run dev` | Servidor em modo desenvolvimento |
+| Script        | Descripción                    |
+|---------------|--------------------------------|
+| `npm run dev` | Servidor en modo desarrollo    |
 | `npm run build` | Compila TypeScript → `dist/` |
-| `npm start`   | Roda `dist/server.js`        |
-| `npm run db:generate` | Gera migrations (Drizzle) |
-| `npm run db:migrate`  | Aplica migrations           |
-| `npm run db:studio`   | Abre Drizzle Studio         |
+| `npm start`   | Ejecuta `dist/server.js`       |
+| `npm run db:generate` | Genera migraciones (Drizzle) |
+| `npm run db:migrate`  | Aplica migraciones            |
+| `npm run db:studio`   | Abre Drizzle Studio           |
+
+## Tabla `users`
+
+Campos: `id`, `name`, `email`, `password`, `role`, `createdAt`, `updatedAt`.
+
+- Las contraseñas deben guardarse hasheadas con **bcrypt** al registrar o actualizar.
+- Roles: `user` y `admin`.
