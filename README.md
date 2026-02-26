@@ -1,4 +1,4 @@
-# Backend Woow
+# REST API Woow Technology
 
 Este repositorio corresponde a un assignment técnico solicitado por [WoowTechnology SAS](https://woowtechnologysas.com/) como parte del proceso de selección para la vacante de desarrollador de software.
 
