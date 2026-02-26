@@ -7,6 +7,11 @@ export async function findByEmail(email: string) {
   return user ?? null;
 }
 
+export async function findById(id: string) {
+  const [user] = await db.select().from(users).where(eq(users.id, id)).limit(1);
+  return user ?? null;
+}
+
 export async function create(data: {
   name: string;
   email: string;
