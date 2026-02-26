@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { register, login } from "../controllers/auth.controller";
+import { login, logout, register } from "../controllers/auth.controller";
 import { registerValidations, loginValidations } from "../validators/auth.validator";
 import { handleValidationErrors } from "../middlewares/validation.middleware";
 
@@ -18,5 +18,7 @@ router.post(
   handleValidationErrors,
   login
 );
+
+router.post("/logout", logout);
 
 export default router;

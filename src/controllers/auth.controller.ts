@@ -1,7 +1,12 @@
 import { Request, Response } from "express";
 import { register as registerService, login as loginService } from "../services/auth.service";
 import { cookieConfig } from "../config/auth";
-import type { RegisterBody, LoginBody } from "../models/auth.types";
+import type { LoginBody, RegisterBody } from "../models/auth.types";
+
+export async function logout(req: Request, res: Response): Promise<void> {
+  res.clearCookie(cookieConfig.name, { path: cookieConfig.options.path });
+  res.status(200).json({ message: "Sesión cerrada" });
+}
 
 export async function register(req: Request, res: Response): Promise<void> {
   try {
