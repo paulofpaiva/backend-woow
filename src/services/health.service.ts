@@ -1,4 +1,4 @@
-import { checkDatabaseConnection } from "../db/index.js";
+import { checkDatabaseConnection } from "../db/index";
 
 const API_NAME = "backend-woow";
 const API_VERSION = "1.0.0";
