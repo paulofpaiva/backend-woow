@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
-import { getProfile, updateProfile, listUsers } from "../services/users.service";
+import type { ListUsersFilters } from "../repositories/user.repository";
+import { getProfile, listUsers, updateProfile } from "../services/users.service";
 import type { UpdateProfileBody } from "../models/auth.types";
 
 export async function getMe(req: Request, res: Response): Promise<void> {
@@ -43,7 +44,14 @@ export async function getUsers(req: Request, res: Response): Promise<void> {
   try {
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 10;
-    const data = await listUsers(page, limit);
+    const search = typeof req.query.search === "string" ? req.query.search : undefined;
+    const role =
+      req.query.role === "user" || req.query.role === "admin"
+        ? req.query.role
+        : undefined;
+    const filters: ListUsersFilters | undefined =
+      search !== undefined || role !== undefined ? { search, role } : undefined;
+    const data = await listUsers(page, limit, filters);
     res.status(200).json(data);
   } catch {
     res.status(500).json({ message: "Error al listar usuarios" });

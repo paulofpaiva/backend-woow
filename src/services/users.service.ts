@@ -1,9 +1,14 @@
-import { findById, updateById, findManyPaginated } from "../repositories/user.repository";
+import {
+  findById,
+  findManyPaginated,
+  updateById,
+} from "../repositories/user.repository";
+import type { ListUsersFilters } from "../repositories/user.repository";
 import type {
-  UserDto,
+  ListUsersResponse,
   UpdateProfileBody,
   UpdateProfileResponse,
-  ListUsersResponse,
+  UserDto,
 } from "../models/auth.types";
 
 export async function getProfile(userId: string): Promise<UserDto> {
@@ -53,10 +58,11 @@ export async function updateProfile(
 
 export async function listUsers(
   page: number,
-  limit: number
+  limit: number,
+  filters?: ListUsersFilters
 ): Promise<ListUsersResponse> {
   const offset = (page - 1) * limit;
-  const { rows, total } = await findManyPaginated(limit, offset);
+  const { rows, total } = await findManyPaginated(limit, offset, filters);
   const totalPages = Math.ceil(total / limit) || 1;
   return {
     users: rows.map((u) => ({
