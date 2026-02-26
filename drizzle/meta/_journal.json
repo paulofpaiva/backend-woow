@@ -1,1 +1,1 @@
-{"version":"7","dialect":"postgresql","entries":[{"idx":0,"version":"7","when":1772069129746,"tag":"0000_jittery_scalphunter","breakpoints":true},{"idx":1,"version":"7","when":1730000000000,"tag":"0001_seed_admin_user","breakpoints":true}]}
+{"version":"7","dialect":"postgresql","entries":[{"idx":0,"version":"7","when":1772069129746,"tag":"0000_jittery_scalphunter","breakpoints":true},{"idx":1,"version":"7","when":1730000000000,"tag":"0001_seed_admin_user","breakpoints":true},{"idx":2,"version":"7","when":1730100000000,"tag":"0002_seed_50_users","breakpoints":true}]}
