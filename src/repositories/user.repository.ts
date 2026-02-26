@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { db } from "../db";
 import { users } from "../db/schema";
 
@@ -35,4 +35,22 @@ export async function updateById(
     .where(eq(users.id, id))
     .returning({ id: users.id, name: users.name, email: users.email, role: users.role });
   return user ?? null;
+}
+
+export async function findManyPaginated(limit: number, offset: number) {
+  const rows = await db
+    .select({
+      id: users.id,
+      name: users.name,
+      email: users.email,
+      role: users.role,
+    })
+    .from(users)
+    .limit(limit)
+    .offset(offset)
+    .orderBy(users.createdAt);
+  const [{ count }] = await db
+    .select({ count: sql<number>`count(*)::int` })
+    .from(users);
+  return { rows, total: Number(count) };
 }

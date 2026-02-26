@@ -24,3 +24,15 @@ export function requireAuth(req: Request, res: Response, next: NextFunction): vo
     res.status(401).json({ message: "Token inválido o expirado" });
   }
 }
+
+export function requireAdmin(req: Request, res: Response, next: NextFunction): void {
+  if (!req.user) {
+    res.status(401).json({ message: "No autorizado" });
+    return;
+  }
+  if (req.user.role !== "admin") {
+    res.status(403).json({ message: "No tienes permiso para esta acción" });
+    return;
+  }
+  next();
+}

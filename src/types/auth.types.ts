@@ -34,3 +34,15 @@ export interface UpdateProfileResponse {
   message: string;
   user: UserDto;
 }
+
+export interface PaginationMeta {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+}
+
+export interface ListUsersResponse {
+  users: UserDto[];
+  pagination: PaginationMeta;
+}

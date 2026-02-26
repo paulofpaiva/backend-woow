@@ -1,5 +1,10 @@
-import { findById, updateById, findByEmail } from "../repositories/user.repository";
-import type { UserDto, UpdateProfileBody, UpdateProfileResponse } from "../types/auth.types";
+import { findById, updateById, findByEmail, findManyPaginated } from "../repositories/user.repository";
+import type {
+  UserDto,
+  UpdateProfileBody,
+  UpdateProfileResponse,
+  ListUsersResponse,
+} from "../types/auth.types";
 
 export async function getProfile(userId: string): Promise<UserDto> {
   const user = await findById(userId);
@@ -53,6 +58,29 @@ export async function updateProfile(
       name: updated.name,
       email: updated.email,
       role: updated.role,
+    },
+  };
+}
+
+export async function listUsers(
+  page: number,
+  limit: number
+): Promise<ListUsersResponse> {
+  const offset = (page - 1) * limit;
+  const { rows, total } = await findManyPaginated(limit, offset);
+  const totalPages = Math.ceil(total / limit) || 1;
+  return {
+    users: rows.map((u) => ({
+      id: u.id,
+      name: u.name,
+      email: u.email,
+      role: u.role,
+    })),
+    pagination: {
+      page,
+      limit,
+      total,
+      totalPages,
     },
   };
 }

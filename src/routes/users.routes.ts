@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { getMe, putMe } from "../controllers/users.controller";
-import { requireAuth } from "../middlewares/auth.middleware";
-import { updateProfileValidations } from "../validators/users.validator";
+import { getMe, putMe, getUsers } from "../controllers/users.controller";
+import { requireAuth, requireAdmin } from "../middlewares/auth.middleware";
+import { updateProfileValidations, listUsersValidations } from "../validators/users.validator";
 import { handleValidationErrors } from "../middlewares/validation.middleware";
 
 const router = Router();
@@ -13,6 +13,14 @@ router.put(
   updateProfileValidations,
   handleValidationErrors,
   putMe
+);
+router.get(
+  "/",
+  requireAuth,
+  requireAdmin,
+  listUsersValidations,
+  handleValidationErrors,
+  getUsers
 );
 
 export default router;
